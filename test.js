@@ -4,7 +4,7 @@ let createProxyServe = require("./index.js");
 createProxyServe({
     port: 3333, //代理服务的端口
     proxyUrlObj: {// 两个代理地址
-        "/api1": "http://xxxxxxxxxxxx.cn",
+        "/api1": "http://problemset-test.geeklamp.cn",
         "/api2": "http://baidu.com",
     },
     headers: ["content-type"],//表示只允许转发content-type请求头
