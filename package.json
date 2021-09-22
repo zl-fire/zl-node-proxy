@@ -1,0 +1,26 @@
+{
+  "name": "zl-node-proxy",
+  "version": "1.0.4",
+  "description": "使用node开发的一个请求代理模块",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pak": "rollup src/main.js --file index.js --format umd --name 'zl-docx2html'",
+    "tsc": "tsc -d --allowJS index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zl-fire/zl-node-proxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zl-fire/zl-node-proxy/issues"
+  },
+  "homepage": "https://github.com/zl-fire/zl-node-proxy#readme",
+  "dependencies": {
+    "axios": "^0.21.4",
+    "express": "^4.17.1"
+  }
+}
