@@ -19,16 +19,20 @@
  ![bb](/assets/bb.png)
 ```js
 let createProxyServe = require("zl-node-proxy");
-//构造代理请求服务器
+
+// 构造代理请求服务器
 createProxyServe({
-    port: 3125, //代理服务的端口，默认3123,如果你电脑的当前端口已经被占用，那么可以手动更换电脑端口
+    port: 3333, //代理服务的端口,默认3213，可任意设置，只要设置的端口没有被占用即可。
     proxyUrlObj: {// 两个代理地址
-        "/proxyUrl1": "http://xxxxxxxxxxxx.cn",
-        "/proxyUrl2": "http://baidu.com",
+        "/api1": "http://xxxxxxxxxxxx.cn",
+        "/api2": "http://baidu.com",
     },
-    headers: ["content-type"],//表示只允许转发content-type请求头
+    // headers: ["content-type"],//表示只允许转发content-type请求头（headers也可以为Boolean类型，为true表示转发所有的请求头，为false表示不转发任何请求头）
+    delHeaders: ["content-type"],//表示删除content-type请求头，然后其他的都允许转发
+    customHeaders: { //在上面允许转发的请求头的基础上，追加下面的请求头字段
+        "origin": "http://xxxxxxxxxxxx.cn",
+    }
 });
-// headers参数说明：headers也可以为Boolean类型，为true表示转发所有的请求头，为false表示不转发任何请求头
 
 ```
 
@@ -139,4 +143,19 @@ createProxyServe({
 6. 代理请求日志（当正式请求时，会自动将代理的实际请求和相关结果在控制台打印出来）
 ![77](/assets/77.png)
 
+## 提示
+  如果担心代理服务的日志和本身页面服务的日志冲突和影响
+  可以不修改原本的脚本命令，如start，build,test 等，而是直接在package.json中加一个脚本命令，如下
+  ```js
+   原本的start命令：  
+       "start": "react-scripts start",
+
+   在start命令后再添加一个命令： 
+       "start": "react-scripts start",
+       "proxyServe": "node ./zl_node_proxy.config.js",
+
+   这样执行npm run start启动项目时，在新开个终端窗口额外执行下proxyServe命令：npm run proxyServe 启动代理服务即可（你的启动命令不一定时start,不过这个无所谓，执行你的实际启动命令即可）
+
+   这时由于代理服务和页面服务是在不同的终端窗口的，所以互相不会影响
+  ```
    

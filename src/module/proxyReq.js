@@ -1,5 +1,6 @@
 import axios from "axios"
-function proxyReq(proxyUrlObj, headersVal) {
+function proxyReq(params) {
+  let   { proxyUrlObj, delHeaders, headersVal, customHeaders }=params;
     return function route(req, res) {
         // 获取请求方式，路径，body,query,header
         let method = req.method;
@@ -17,6 +18,11 @@ function proxyReq(proxyUrlObj, headersVal) {
             }
         }
         // console.log("====url==", url);
+
+        // 先根据delHeaders进行删除不用的字段
+        delHeaders.forEach(key=>{
+            delete headers[key];
+        })
 
         // 根据请求头过滤配置得到要向后端传递的请求头
         if (typeof headersVal == 'boolean') {
@@ -36,7 +42,7 @@ function proxyReq(proxyUrlObj, headersVal) {
             method: method,
             url: url,
             data: body,
-            headers: headers
+            headers: { ...customHeaders, ...headers }
         };
         console.log("============" + req.originalUrl + " 代理请求信息==============\n", JSON.stringify(option, null, 4))
         // 发送 POST 请求
@@ -45,7 +51,8 @@ function proxyReq(proxyUrlObj, headersVal) {
             res.send(d.data);
         }).catch(function (err) {
             // console.log("============err==========", err)
-            res.send({ "code": 1, message: "代理请求失败："+err.message });
+            console.log("========" + req.originalUrl + " 代理请求结果==============\n", "代理请求失败：" + err.message)
+            res.send({ "code": 1, message: "代理请求失败：" + err.message });
         })
     }
 }
